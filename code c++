@@ -1,0 +1,60 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+long long memo[5001][105][105] = {};
+
+int main(){
+ 
+	int row = 0;
+	int col = 0;
+	int length = 0;
+	char roboMap[105][105] = {};
+
+ 	cin >> row >> col >> length;
+ 
+	 for(int i=0; i<row; i++){
+	  for(int j=0; j<col; j++){
+	  	
+	   	cin >> roboMap[i][j];
+	   	
+	   if(roboMap[i][j] == 'R'){
+	    	memo[0][i][j] = 1;
+	   }
+	  }
+	 }
+ 
+ 	for(int i = 0; i < length; i++){
+        for(int j = 0; j < row; j++){
+            for(int k = 0; k < col; k++){
+            	
+                if(memo[i][j][k] != 0){
+                    if(j+1 < row && j+1 >= 0 && k < col && k >= 0 && roboMap[j+1][k] != '#'){
+                        memo[i+1][j+1][k] += memo[i][j][k];
+                        memo[i+1][j+1][k] %= 1000000007;
+                    }
+                    if(j-1 < row && j-1 >= 0 && k < col && k >= 0 && roboMap[j-1][k] != '#'){
+                        memo[i+1][j-1][k] += memo[i][j][k];
+                        memo[i+1][j-1][k] %= 1000000007;
+                    }
+                    if(j < row && j >= 0 && k+1 < col && k+1 >= 0 && roboMap[j][k+1] != '#'){
+                        memo[i+1][j][k+1] += memo[i][j][k];
+                        memo[i+1][j][k+1] %= 1000000007;
+                    }
+                    if(j < row && j >= 0 && k-1 < col && k-1 >= 0 && roboMap[j][k-1] != '#'){
+                        memo[i+1][j][k-1] += memo[i][j][k];
+                        memo[i+1][j][k-1] %= 1000000007;
+                    }
+                }
+            }
+        }
+    }
+    
+    for(int i = 0; i < row; i++){
+        for(int j = 0; j < col; j++){
+            cout << memo[length][i][j] <<" ";
+        }
+        cout << endl;
+    }
+    
+    return 0;
+}
